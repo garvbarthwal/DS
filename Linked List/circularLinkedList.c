@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct circularList {
     int data;
@@ -198,6 +198,83 @@ void display(cl* head) {
     printf("\n");
 }
 
+int isPalindrome(cl* head) {
+    if (head == NULL) return 1; // An empty list is a palindrome
+
+    cl *slow = head, *fast = head;
+    cl *stack[100]; // Stack to store the first half of the list
+    int top = -1;
+
+    // Push first half of the list onto stack
+    while (fast != head && fast->next != head) {
+        stack[++top] = slow; // Store node
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    // For odd nodes, skip the middle node
+    if (fast != head) {
+        slow = slow->next;
+    }
+
+    // Compare second half with stack
+    while (slow != head) {
+        if (slow->data != stack[top--]->data) {
+            return 0; // Not a palindrome
+        }
+        slow = slow->next;
+    }
+
+    return 1; // It's a palindrome
+}
+
+cl* reverse(cl* head) {
+    if (head == NULL || head->next == head) {
+        return head; // Empty list or single node
+    }
+
+    cl *prev = NULL, *current = head, *next = NULL;
+    cl *last = head;
+
+    // Find the last node
+    while (last->next != head) {
+        last = last->next;
+    }
+
+    // Reverse the list
+    do {
+        next = current->next; // Store next node
+        current->next = prev; // Reverse current node's pointer
+        prev = current; // Move prev to current
+        current = next; // Move to next node
+    } while (current != head);
+
+    last->next = prev; // Update last node's next to new head
+    head = prev; // New head is the last processed node
+
+    return head;
+}
+
+void printAlternate(cl* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    cl* current = head;
+    int count = 0;
+
+    printf("Alternate nodes: ");
+    do {
+        if (count % 2 == 0) {
+            printf("%d ", current->data);
+        }
+        current = current->next;
+        count++;
+    } while (current != head);
+    printf("\n");
+}
+
 int main() {
     cl* head = NULL;
     int choice;
@@ -260,7 +337,7 @@ int main() {
             default:
                 printf("Invalid choice. Try again.\n");
         }
-    } while (choice < 10);
+    } while (1); // Loop indefinitely until user chooses to exit
 
     return 0;
 }
