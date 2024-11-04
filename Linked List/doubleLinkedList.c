@@ -1,5 +1,5 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct doubleList {
     struct doubleList* previous;
@@ -199,6 +199,66 @@ void display(dl* head) {
     printf("\n");
 }
 
+int isPalindrome(dl* head) {
+    if (head == NULL) return 1;
+
+    dl* left = head;
+    dl* right = head;
+    // Find the last node
+    while (right->next != NULL) {
+        right = right->next;
+    }
+
+    while (left != NULL && right != NULL && left != right && left->previous != right) {
+        if (left->data != right->data) {
+            return 0; // Not a palindrome
+        }
+        left = left->next;
+        right = right->previous;
+    }
+    return 1; // Is a palindrome
+}
+
+dl* reverse(dl* head) {
+    if (head == NULL) return NULL;
+
+    dl* temp = NULL;
+    dl* current = head;
+
+    while (current != NULL) {
+        temp = current->previous;
+        current->previous = current->next;
+        current->next = temp;
+        current = current->previous;
+    }
+
+    if (temp != NULL) {
+        head = temp->previous; // New head
+    }
+
+    return head;
+}
+
+void printAlternate(dl* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return;
+    }
+
+    dl* current = head;
+    int count = 0;
+
+    printf("Alternate nodes: ");
+    while (current != NULL) {
+        if (count % 2 == 0) {
+            printf("%d ", current->data);
+        }
+        count++;
+        current = current->next;
+    }
+    printf("\n");
+}
+
 int main() {
     dl* head = NULL;
     int choice;
@@ -212,10 +272,13 @@ int main() {
         printf("5. To delete from end\n");
         printf("6. To delete from anywhere\n");
         printf("9. To display\n");
+        printf("10. To check if the list is palindrome or not\n");
+        printf("11. To reverse the list\n");
+        printf("12. To print alternate nodes\n");
         printf("0. To exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
+    
         switch (choice) {
             case 1:
                 head = addInFront(head);
@@ -237,6 +300,20 @@ int main() {
                 break;
             case 9:
                 display(head);
+                break;
+            case 10:
+                if (isPalindrome(head)) {
+                    printf("The list is a palindrome.\n");
+                } else {
+                    printf("The list is not a palindrome.\n");
+                }
+                break;
+            case 11:
+                head = reverse(head);
+                printf("The list has been reversed.\n");
+                break;
+            case 12:
+                printAlternate(head);
                 break;
             case 0:
                 printf("Exiting...\n");

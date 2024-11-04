@@ -6,6 +6,7 @@ typedef struct singleList {
     struct singleList* next;
 } sl;
 
+// Function to add a node in front
 sl* addInFront(sl* head) {
     int x;
     sl* temp = (sl*)malloc(sizeof(sl));
@@ -22,6 +23,7 @@ sl* addInFront(sl* head) {
     return temp;
 }
 
+// Function to add a node at the end
 sl* addInLast(sl* head) {
     int x;
     sl* temp = (sl*)malloc(sizeof(sl));
@@ -47,6 +49,7 @@ sl* addInLast(sl* head) {
     return head;
 }
 
+// Function to add a node at a specified position
 sl* addInBetween(sl* head) {
     int x, pos;
     sl* temp = (sl*)malloc(sizeof(sl));
@@ -88,6 +91,7 @@ sl* addInBetween(sl* head) {
     return head;
 }
 
+// Function to delete a node from the front
 sl* deleteFromFront(sl* head) {
     if (head == NULL) {
         printf("List is empty. Nothing to delete.\n");
@@ -100,6 +104,7 @@ sl* deleteFromFront(sl* head) {
     return head; 
 }
 
+// Function to delete a node from the end
 sl* deleteFromEnd(sl* head) {
     if (head == NULL) {
         printf("Nothing to delete from the existing list.\n");
@@ -120,6 +125,7 @@ sl* deleteFromEnd(sl* head) {
     return head;
 }
 
+// Function to delete a node from a specified position
 sl* deleteFromAnywhere(sl* head) {
     if (head == NULL) {
         printf("List is empty. Nothing to delete.\n");
@@ -162,6 +168,7 @@ sl* deleteFromAnywhere(sl* head) {
     return head;
 }
 
+// Function to display the linked list
 void display(sl* head) {
     sl* temp = head;
     printf("Linked List: ");
@@ -170,6 +177,72 @@ void display(sl* head) {
         temp = temp->next;
     }
     printf("NULL\n");
+}
+
+// Function to check if the linked list is a palindrome
+int isPalindrome(sl* head) {
+    if (head == NULL) return 1;
+
+    // Use slow and fast pointers to find the middle
+    sl* slow = head;
+    sl* fast = head;
+    sl* prev = NULL;
+
+    // Reverse the first half of the list while finding the middle
+    while (fast != NULL && fast->next != NULL) {
+        fast = fast->next->next;
+
+        // Reverse the first half of the list
+        sl* next = slow->next;
+        slow->next = prev;
+        prev = slow;
+        slow = next;
+    }
+
+    // If the list has odd number of elements, skip the middle element
+    if (fast != NULL) {
+        slow = slow->next;
+    }
+
+    // Compare the two halves
+    while (prev != NULL && slow != NULL) {
+        if (prev->data != slow->data) {
+            return 0; // Not a palindrome
+        }
+        prev = prev->next;
+        slow = slow->next;
+    }
+    return 1; // Is a palindrome
+}
+
+// Function to reverse the linked list
+sl* reverse(sl* head) {
+    sl* prev = NULL;
+    sl* current = head;
+    sl* next = NULL;
+
+    while (current != NULL) {
+        next = current->next; // Store next node
+        current->next = prev; // Reverse current node's pointer
+        prev = current;       // Move pointers one position ahead
+        current = next;
+    }
+    return prev; // New head of the reversed list
+}
+
+// Function to print alternate nodes
+void printAlternate(sl* head) {
+    sl* current = head;
+    printf("Alternate Nodes: ");
+    while (current != NULL) {
+        printf("%d ", current->data);
+        if (current->next != NULL) {
+            current = current->next->next; // Move to the next alternate node
+        } else {
+            break;
+        }
+    }
+    printf("\n");
 }
 
 int main() {
@@ -185,6 +258,9 @@ int main() {
         printf("5. To delete from end\n");
         printf("6. To delete from anywhere\n");
         printf("9. To display\n");
+        printf("10. To check if the list is palindrome or not\n");
+        printf("11. To reverse the list\n");
+        printf("12. To print alternate nodes\n");
         printf("0. To exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -210,6 +286,20 @@ int main() {
                 break;
             case 9:
                 display(head);
+                break;
+            case 10:
+                if (isPalindrome(head)) {
+                    printf("The list is a palindrome.\n");
+                } else {
+                    printf("The list is not a palindrome.\n");
+                }
+                break;
+            case 11:
+                head = reverse(head);
+                printf("The list has been reversed.\n");
+                break;
+            case 12:
+                printAlternate(head);
                 break;
             case 0:
                 printf("Exiting...\n");

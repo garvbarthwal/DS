@@ -211,10 +211,13 @@ int main() {
         printf("5. To delete from end\n");
         printf("6. To delete from anywhere\n");
         printf("9. To display\n");
+        printf("10. To check if the list is palindrome or not\n");
+        printf("11. To reverse the list\n");
+        printf("12. To print alternate nodes\n");
         printf("0. To exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
-
+    
         switch (choice) {
             case 1:
                 head = addInFront(head);
@@ -236,6 +239,20 @@ int main() {
                 break;
             case 9:
                 display(head);
+                break;
+            case 10:
+                if (isPalindrome(head)) {
+                    printf("The list is a palindrome.\n");
+                } else {
+                    printf("The list is not a palindrome.\n");
+                }
+                break;
+            case 11:
+                head = reverse(head);
+                printf("The list has been reversed.\n");
+                break;
+            case 12:
+                printAlternate(head);
                 break;
             case 0:
                 printf("Exiting...\n");
