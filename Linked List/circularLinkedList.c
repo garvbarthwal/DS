@@ -275,6 +275,148 @@ void printAlternate(cl* head) {
     printf("\n");
 }
 
+// Additional Operations
+
+cl* rotate(cl* head) {
+    if (head == NULL || head->next == head) {
+        return head; // Single element or empty list
+    }
+
+    cl* last = head;
+    while (last->next != head) {
+        last = last->next;
+    }
+
+    head = head->next;
+    last->next = head;
+
+    return head;
+}
+
+cl* findMiddle(cl* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    cl* slow = head;
+    cl* fast = head;
+
+    while (fast->next != head && fast->next->next != head) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return slow;
+}
+
+cl* merge(cl* head1, cl* head2) {
+    if (head1 == NULL) return head2;
+    if (head2 == NULL) return head1;
+
+    cl* last = head1;
+    while (last->next != head1) {
+        last = last->next;
+    }
+    
+    last->next = head2;
+    
+    cl* temp = head2;
+    while (temp->next != head2) {
+        temp = temp->next;
+    }
+
+    temp->next = head1;
+    return head1;
+}
+
+cl* split(cl* head) {
+    if (head == NULL) {
+        printf("List is empty.\n");
+        return NULL;
+    }
+
+    cl* slow = head;
+    cl* fast = head;
+
+    while (fast->next != head && fast->next->next != head) {
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    cl* secondHalf = slow->next;
+    slow->next = head;
+
+    // Find the last node of the second half
+    cl* temp = secondHalf;
+    while (temp->next != head) {
+        temp = temp->next;
+    }
+    temp->next = secondHalf;
+
+    return secondHalf;
+}
+
+int length(cl* head) {
+    if (head == NULL) return 0;
+
+    int len = 1;
+    cl* current = head;
+
+    while (current->next != head) {
+        len++;
+        current = current->next;
+    }
+
+    return len;
+}
+
+int detectLoop(cl* head) {
+    if (head == NULL) return 0;
+
+    cl* slow = head;
+    cl* fast = head;
+
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            return 1; // Loop detected
+        }
+    }
+
+    return 0; // No loop detected
+}
+
+cl* toNormalList(cl* head) {
+    if (head == NULL) {
+        return NULL;
+    }
+
+    cl* current = head;
+    cl* newHead = NULL;
+    cl* newTail = NULL;
+
+    do {
+        cl* newNode = (cl*)malloc(sizeof(cl));
+        newNode->data = current->data;
+        newNode->next = NULL;
+
+        if (newHead == NULL) {
+            newHead = newNode;
+            newTail = newNode;
+        } else {
+            newTail->next = newNode;
+            newTail = newNode;
+        }
+
+        current = current->next;
+    } while (current != head);
+
+    return newHead;
+}
+
 int main() {
     cl* head = NULL;
     int choice;
@@ -287,10 +429,16 @@ int main() {
         printf("4. To delete from front\n");
         printf("5. To delete from end\n");
         printf("6. To delete from anywhere\n");
-        printf("9. To display\n");
-        printf("10. To check if the list is palindrome or not\n");
-        printf("11. To reverse the list\n");
-        printf("12. To print alternate nodes\n");
+        printf("7. To reverse the list\n");
+        printf("8. To split the list\n");
+        printf("9. To merge two lists\n");
+        printf("10. To find the length of the list\n");
+        printf("11. To rotate the list\n");
+        printf("12. To find the middle element\n");
+        printf("13. To detect a loop in the list\n");
+        printf("14. To convert to normal list\n");
+        printf("15. To check if the list is palindrome or not\n");
+        printf("16. To print alternate nodes\n");
         printf("0. To exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -314,21 +462,47 @@ int main() {
             case 6:
                 head = deleteFromAnywhere(head);
                 break;
+            case 7:
+                head = reverse(head);
+                printf("The list has been reversed.\n");
+                break;
+            case 8:
+                head = split(head);
+                break;
             case 9:
-                display(head);
+                head = merge(head, head);
                 break;
             case 10:
+                printf("Length of the list: %d\n", length(head));
+                break;
+            case 11:
+                head = rotate(head);
+                break;
+            case 12:
+                cl* middle = findMiddle(head);
+                if (middle != NULL) {
+                    printf("Middle element: %d\n", middle->data);
+                }
+                break;
+            case 13:
+                if (detectLoop(head)) {
+                    printf("Loop detected.\n");
+                } else {
+                    printf("No loop detected.\n");
+                }
+                break;
+            case 14:
+                cl* normalList = toNormalList(head);
+                display(normalList);
+                break;
+            case 15:
                 if (isPalindrome(head)) {
                     printf("The list is a palindrome.\n");
                 } else {
                     printf("The list is not a palindrome.\n");
                 }
                 break;
-            case 11:
-                head = reverse(head);
-                printf("The list has been reversed.\n");
-                break;
-            case 12:
+            case 16:
                 printAlternate(head);
                 break;
             case 0:

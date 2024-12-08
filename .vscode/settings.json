@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "DFS_BFS.C": "cpp",
+        "stdlib.h": "c",
+        "stdio.h": "c"
+    }
+}

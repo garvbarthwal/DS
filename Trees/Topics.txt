@@ -1,0 +1,27 @@
+Topics the be covered in trees
+1.Binary trees ✅
+2.Binary search trees ✅
+3.AVL trees ✅ https://www.youtube.com/watch?v=jDM6_TnYIqE
+4.Traversal techniques(Inorder,preorder,postorder) ✅
+5.Complete Binary tree  https://www.geeksforgeeks.org/complete-binary-tree/
+6.Huffman algorithm & tree ✅ https://www.youtube.com/watch?v=co4_ahEDCho
+7.B trees(Multiway tree) ✅ https://www.youtube.com/watch?v=aZjYr87r1b8
+8.B+ trees ✅
+9.Threaded Binary trees https://www.geeksforgeeks.org/threaded-binary-tree/
+-----------------------------------------
+bst.c-A to Z binary search tree.
+Count total nodes✅.Count leaf nodes✅.Level order Traversal✅.Find nodes at a given Level✅-TODO✅
+1. To Insert ✅
+2. To Delete ✅
+3. To Search for a node ✅
+4. To Display BST (Inorder/Preorder/Postorder) ✅
+5. To Find Minimum Value ✅
+6. To Find Maximum Value ✅
+7. To Check if BST is Balanced ✅
+8. To Find Lowest Common Ancestor ✅
+9. To Find Kth Smallest Element ✅
+10. To Calculate Diameter ✅
+11. To Display All Root-to-Leaf Paths ✅
+
+-----------------------------------------
+Trees.c-Ab ek hi program mein ek input nodes ki array leni hai jo ki inoder mein hogi jisse hume bt,bst,avl tree,huffman tree,B tree,b+tree,Threaded binary tree bnane hai 

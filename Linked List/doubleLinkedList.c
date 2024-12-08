@@ -259,6 +259,49 @@ void printAlternate(dl* head) {
     printf("\n");
 }
 
+// Merge two sorted lists
+dl* merge(dl* left, dl* right) {
+    if (left == NULL) return right;
+    if (right == NULL) return left;
+
+    if (left->data < right->data) {
+        left->next = merge(left->next, right);
+        left->next->previous = left;
+        left->previous = NULL;
+        return left;
+    } else {
+        right->next = merge(left, right->next);
+        right->next->previous = right;
+        right->previous = NULL;
+        return right;
+    }
+}
+
+// Merge Sort for Doubly Linked List
+dl* mergeSort(dl* head) {
+    if (head == NULL || head->next == NULL) {
+        return head;
+    }
+
+    dl* middle = head;
+    dl* fast = head->next;
+    
+    // Split the list into two halves
+    while (fast != NULL && fast->next != NULL) {
+        middle = middle->next;
+        fast = fast->next->next;
+    }
+
+    dl* left = head;
+    dl* right = middle->next;
+    middle->next = NULL;
+
+    left = mergeSort(left);
+    right = mergeSort(right);
+
+    return merge(left, right);
+}
+
 int main() {
     dl* head = NULL;
     int choice;
@@ -275,6 +318,7 @@ int main() {
         printf("10. To check if the list is palindrome or not\n");
         printf("11. To reverse the list\n");
         printf("12. To print alternate nodes\n");
+        printf("13. To sort the list using merge sort\n");
         printf("0. To exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
@@ -314,6 +358,10 @@ int main() {
                 break;
             case 12:
                 printAlternate(head);
+                break;
+            case 13:
+                head = mergeSort(head);
+                printf("The list has been sorted using merge sort.\n");
                 break;
             case 0:
                 printf("Exiting...\n");

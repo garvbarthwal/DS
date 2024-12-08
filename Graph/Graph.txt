@@ -1,0 +1,6 @@
+BFS and DFS https://www.youtube.com/watch?v=pcKY4hjDrxk&list=PLL_Rr0-eLWmOMccWWU5CL_suJRjGaZdxq&index=9 ✅
+
+Kruskal's https://www.youtube.com/watch?v=4ZlRH0eK-qQ&list=PLL_Rr0-eLWmOMccWWU5CL_suJRjGaZdxq&index=3
+
+Dijkstras algorithm https://www.youtube.com/watch?v=XB4MIexjvY0&list=PLL_Rr0-eLWmOMccWWU5CL_suJRjGaZdxq&index=4 ✅
+
