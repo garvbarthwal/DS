@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+// Single structure for graph node and adjacency list
+typedef struct Node {
+int vertex;
+struct Node *next; // For adjacency list
+} Node;
+// Function to create a new node
+Node *createNode(int vertex) {
+Node *newNode = (Node *)malloc(sizeof(Node));
+newNode->vertex = vertex;
+newNode->next = NULL;
+return newNode;
+}
+// Function to add an edge to the graph
+void addEdge(Node **adjLists, int src, int dest) {
+// Add edge from src to dest
+Node *newNode = createNode(dest);
+newNode->next = adjLists[src];
+adjLists[src] = newNode;
+// Add edge from dest to src if the graph is undirected
+newNode = createNode(src);
+newNode->next = adjLists[dest];
+adjLists[dest] = newNode;
+}
+// Function to print the graph
+void printGraph(Node **adjLists, int vertices) {
+printf("Graph adjacency list:\n");
+for (int i = 0; i < vertices; i++) {
+printf("%d: ", i);
+Node *temp = adjLists[i];
+while (temp != NULL) { // Explicit condition
+printf("
+-> %d ", temp->vertex);
+temp = temp->next;
+}
+printf("\n");
+}
+}
+// DFS utility function
+int dfsUtil(Node **adjLists, int *status, int *parent, int currentVertex, int endVertex) {
+status[currentVertex] = 1; // Mark currentVertex as visited
+if (currentVertex == endVertex) {
+return 1; // Path found
+}
+Node *adj = adjLists[currentVertex];
+while (adj != NULL) {
+int adjVertex = adj->vertex;
+if (status[adjVertex] == 0) { // Check if the vertex is unvisited
+parent[adjVertex] = currentVertex; // Set the parent
+if (dfsUtil(adjLists, status, parent, adjVertex, endVertex)) {
+return 1; // Path found
+}
+}
+adj = adj->next; // Move to the next adjacent vertex
+}
+return 0; // No path found
+}
+// DFS function with path finding
+void dfs(Node **adjLists, int vertices, int startVertex, int endVertex) {
+int *status = (int *)malloc(vertices * sizeof(int));
+int *parent = (int *)malloc(vertices * sizeof(int));
+for (int i = 0; i < vertices; i++) {
+status[i] = 0; // Initialize status of all nodes to 0 (unvisited)
+parent[i] = -1; // Initialize parent of all nodes to -1 (no parent)
+}
+if (dfsUtil(adjLists, status, parent, startVertex, endVertex)) {
+printf("\nDFS from node %d to node %d: ", startVertex, endVertex);
+// Backtrack to find the path
+int pathVertex = endVertex;
+int path[vertices];
+int pathLength = 0;
+while (pathVertex != -1) { // as start vertex has parent as -1
+path[pathLength++] = pathVertex;
+pathVertex = parent[pathVertex];
+}
+for (int i = pathLength - 1; i >= 0; i--) {
+printf("%d ", path[i]);
+}
+printf("\n");
+} else {
+printf("\nNo path found from vertex %d to vertex %d.\n"
+, startVertex, endVertex);
+}
+free(status);
+free(parent);
+}
+// Function to free the graph
+void freeGraph(Node **adjLists, int vertices) {
+for (int i = 0; i < vertices; i++) {
+Node *temp = adjLists[i];
+while (temp) {
+Node *next = temp->next;
+free(temp);
+temp = next;
+}
+}
+free(adjLists);
+}
+int main() {
+int vertices = 5;
+// Create adjacency list
+Node **adjLists = (Node **)malloc(vertices * sizeof(Node *));
+for (int i = 0; i < vertices; i++) {
+adjLists[i] = NULL;
+}
+// Add edges
+addEdge(adjLists, 0, 4);
+addEdge(adjLists, 0, 1);
+addEdge(adjLists, 1, 2);
+addEdge(adjLists, 2, 3);
+addEdge(adjLists, 4, 3);
+// Print the graph
+printGraph(adjLists, vertices);
+// Perform DFS
+int startVertex = 0;
+int endVertex = 3;
+dfs(adjLists, vertices, startVertex, endVertex);
+// Free the graph
+freeGraph(adjLists, vertices);
+return 0;
+}
